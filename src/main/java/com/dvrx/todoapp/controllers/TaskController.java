@@ -1,10 +1,10 @@
 package com.dvrx.todoapp.controllers;
 
 import com.dvrx.todoapp.dao.TaskDAO;
+import com.dvrx.todoapp.dto.TaskDTO;
 import com.dvrx.todoapp.models.Task;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,8 +19,15 @@ public class TaskController {
     }
 
     @GetMapping
-    public List<Task> getAllTasks() {
-        return this.taskDAO.getAllTasks();
+    public ResponseEntity<List<Task>> getAllTasks() {
+        List<Task> tasks = this.taskDAO.getAllTasks();
+        return ResponseEntity.ok(tasks);
+    }
+
+    @PostMapping
+    public ResponseEntity<String> createTask(@RequestBody TaskDTO taskDTO) {
+        this.taskDAO.createTask(taskDTO);
+        return ResponseEntity.ok("gelukt");
     }
 
 }
