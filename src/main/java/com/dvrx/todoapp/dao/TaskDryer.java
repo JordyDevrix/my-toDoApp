@@ -19,8 +19,8 @@ public class TaskDryer {
     }
 
     public void updateTask() {
-        if (optionalTask.isPresent()) {
-            Task updatedTask = optionalTask.get();
+        if (this.optionalTask.isPresent()) {
+            Task updatedTask = this.optionalTask.get();
             updatedTask.setFinished(setStatus);
             this.taskRepository.save(updatedTask);
         } else {
