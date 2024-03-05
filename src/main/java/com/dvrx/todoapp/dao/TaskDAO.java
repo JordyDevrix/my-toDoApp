@@ -1,6 +1,8 @@
 package com.dvrx.todoapp.dao;
 
+import com.dvrx.todoapp.dto.CategoryDTO;
 import com.dvrx.todoapp.dto.TaskDTO;
+import com.dvrx.todoapp.models.Category;
 import com.dvrx.todoapp.models.Task;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
@@ -14,8 +16,11 @@ public class TaskDAO {
 
     private TaskRepository taskRepository;
 
-    public TaskDAO(TaskRepository taskRepository) {
+    private CategoryRepository categoryRepository;
+
+    public TaskDAO(TaskRepository taskRepository, CategoryRepository categoryRepository) {
         this.taskRepository = taskRepository;
+        this.categoryRepository = categoryRepository;
     }
 
     public List<Task> getAllTasks() {
@@ -24,8 +29,22 @@ public class TaskDAO {
     }
 
     public void createTask(TaskDTO taskDTO) {
-        Task task = new Task(taskDTO.name, taskDTO.description);
-        this.taskRepository.save(task);
+        // we gaan de category ophalen aan de hand van het gegeven ID in de taskDTO
+        // checken of category met dat ID wel bestaat
+        // Bestaat niet? > Gooit error
+        // Bestaat wel? > Nieuwe taak aanmaken met category
+        // schrijf de taak weg naar de database
+        Optional<Category> optionalCategory = this.categoryRepository.findById(taskDTO.categoryId);
+        if (optionalCategory.isPresent()) {
+            Category category = optionalCategory.get();
+            Task task = new Task(taskDTO.name, taskDTO.description, category);
+            this.taskRepository.save(task);
+        } else {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    "Categorie bestaat niet"
+            );
+        }
     }
 
     public void updateTaskById(long id, TaskDTO taskDTO) {

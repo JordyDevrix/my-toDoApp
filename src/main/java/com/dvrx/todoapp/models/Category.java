@@ -1,8 +1,12 @@
 package com.dvrx.todoapp.models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+
+import java.util.List;
 
 @Entity
 public class Category {
@@ -18,6 +22,9 @@ public class Category {
     }
 
     // een lijst met taken!
+    @OneToMany(mappedBy = "category")
+    @JsonManagedReference
+    private List<Task> tasks;
 
     public Category() {
     }
@@ -36,5 +43,13 @@ public class Category {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<Task> getTasks() {
+        return tasks;
+    }
+
+    public void setTasks(List<Task> tasks) {
+        this.tasks = tasks;
     }
 }
