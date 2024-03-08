@@ -12,10 +12,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 @RestController
@@ -88,6 +85,11 @@ public class AuthController {
                     HttpStatus.FORBIDDEN, "No valid credentials"
             );
         }
+    }
+
+    @PostMapping("/joke")
+    public  ResponseEntity<String> joke() {
+        return ResponseEntity.ok("Oh jij dacht zo in te loggen?");
     }
 
 }

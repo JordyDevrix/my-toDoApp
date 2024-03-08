@@ -4,7 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 
-@Entity(name = "user")
+@Entity(name = "dvrx")
 public class CustomUser {
     @Id
     @GeneratedValue
